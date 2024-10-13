@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Users</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            border: none;
+        }
+        td {
+            border: 1px solid black;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+        th {
+            border: 1px solid black;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+    </style>
+</head>
+<body>
+<h2>Список пользователей</h2>
+<table>
+    <tr><th>ИД</th><th>Имя</th><th>Фамилия</th><th>Возраст</th><th style="border: 0px;"> </th></tr>
+        <tr th:each="user : ${users}">
+            <td th:text="${user.id}"></td>
+            <td th:text="${user.name}"></td>
+            <td th:text="${user.lastName}"></td>
+            <td th:text="${user.age}"></td>
+            <td style="border: none; padding-right: 1px;">
+                <form action="/users/edit" method="get">
+                    <input type="hidden" name="id" th:value="${user.id}">
+                    <input type="submit" value="изменить"/>
+                </form>
+            </td>
+            <td style="border: none; padding-left: 1px;">
+                <form action="/users/del" method="post">
+                     <input type="hidden" name="id" th:value="${user.id}">
+                     <input type="submit" value="удалить"/>
+                </form>
+            </td>
+        </tr>
+</table>
+<br>
+<form action="users/edit" method="get">
+    <input type="submit" value="Ноый пользователь"/>
+</form>
+</body>
+</html>
