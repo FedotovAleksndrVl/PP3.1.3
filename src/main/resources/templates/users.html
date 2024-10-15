@@ -31,13 +31,13 @@
             <td th:text="${user.lastName}"></td>
             <td th:text="${user.age}"></td>
             <td style="border: none; padding-right: 1px;">
-                <form action="/users/edit" method="get">
+                <form action="/users/edit" method="GET">
                     <input type="hidden" name="id" th:value="${user.id}">
                     <input type="submit" value="изменить"/>
                 </form>
             </td>
             <td style="border: none; padding-left: 1px;">
-                <form action="/users/del" method="post">
+                <form th:method="POST" th:action="@{/users/delete}">
                      <input type="hidden" name="id" th:value="${user.id}">
                      <input type="submit" value="удалить"/>
                 </form>
