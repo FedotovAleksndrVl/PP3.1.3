@@ -19,6 +19,7 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public List<Role> findAllRole() {
+        System.out.println(" Этот метод вызвался ");
         return roleRepository.findAll();
     }
 
@@ -32,4 +33,5 @@ public class RoleServiceImpl implements RoleService {
     public Role findRoleByRole(String role) {
         return roleRepository.findRoleByRole(role);
     }
+
 }

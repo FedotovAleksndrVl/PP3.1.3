@@ -12,6 +12,7 @@ public class Role implements GrantedAuthority {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String role;
+    private String value;
 
     public Role() {
     }
@@ -20,12 +21,11 @@ public class Role implements GrantedAuthority {
         this.id = id;
     }
 
-    public Role(Long id, String role) {
+    public Role(Long id, String role, String value) {
         this.id = id;
         this.role = role;
+        this.value = value;
     }
-
-    //тут методы предоставляются lombok)
 
     @Override
     public String getAuthority() {
@@ -37,6 +37,7 @@ public class Role implements GrantedAuthority {
         return "Role{" +
                 "id=" + id +
                 ", role='" + role + '\'' +
+                ", value='" + value + '\'' +
                 '}';
     }
 }

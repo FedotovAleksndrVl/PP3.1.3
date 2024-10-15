@@ -8,7 +8,7 @@
 <body>
 <h1>Редактор порльзователя</h1>
 
-<form th:method="POST" th:action="@{/users/edit}" th:object="${user}">
+<form th:method="POST" th:action="@{/admin/edit}" th:object="${user}">
     <table>
         <input type="hidden" th:field="*{id}" id="id">
         <tr><td>
@@ -29,10 +29,34 @@
             <input type="text" th:field="*{age}" id="age"/>
             <input type="hidden" th:errors="*{age}"/>
         </td></tr>
+
+        <tr><td>
+            <label for="age">Укажите логин: </label>
+        </td><td>
+            <input type="text" th:field="*{login}" id="login"/>
+            <input type="hidden" th:errors="*{login}"/>
+        </td></tr>
+
+        <tr><td>
+            <label for="age">Укажите пароль: </label>
+        </td><td>
+            <input type="password" th:field="*{password}" id="password"/>
+            <input type="password" th:errors="*{password}"/>
+        </td></tr>
+
+        <tr><td>
+            <label for="age">Задайте роль: </label>
+        </td><td>
+            <input type="checkbox" id="roles" th:each="role: ${roles}"
+                   th:text="${role.value}"
+                   th:value="${role.id}"
+                   th:field="*{roles}"/>
+            <br>
+        </td></tr>
     </table>
     <input type="submit" value="Применить"/>
 </form>
-<form method="get" action="/users">
+<form method="get" action="/admin">
     <input type="submit" value="Отмена"/>
 </form>
 

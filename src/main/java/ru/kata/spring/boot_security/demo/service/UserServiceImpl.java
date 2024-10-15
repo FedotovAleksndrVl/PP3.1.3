@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.model.User;
@@ -17,22 +19,24 @@ import java.util.Optional;
 public class UserServiceImpl implements UserDetailsService, UserService {
 
     private UserRepository userRepository;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     @Transactional
     public void saveUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }
 
     @Override
     public User getUserById(Long id){
         User user = userRepository.findById(id).get();
-        System.out.println("Это сервис id = " + user);
         return user;
     }
 
@@ -40,7 +44,6 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     @Transactional
     public void removeUserById(long id) {
         if (userRepository.findById(id).isPresent()) {
-            System.out.println("Вот сюда вот зашли и получили id = " + id);
             userRepository.deleteById(id);
         }
     }
@@ -53,13 +56,21 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     @Override
     @Transactional
     public void updateUser(User user) {
+
+        User existingUser = userRepository.findById(user.getId()).get();
+        if (user.getPassword().isEmpty()) {
+            user.setPassword(existingUser.getPassword());
+        } else {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
+
         userRepository.save(user);
     }
 
     @Transactional
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> user = userRepository.findByUsername(username);
+        Optional<User> user = userRepository.findByLogin(username);
         if (user.isEmpty()) {
             throw new UsernameNotFoundException(String.format("User '%s' not found", username));
         }

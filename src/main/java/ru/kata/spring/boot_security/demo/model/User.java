@@ -21,7 +21,8 @@ public class User implements UserDetails {
     private String  name;
     private String  lastName;
     private Byte    age;
-    private String  username;
+    @Column(unique=true)
+    private String  login;
     private String  password;
 
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
@@ -32,11 +33,12 @@ public class User implements UserDetails {
 
     }
 
-    public User(String name, String lastName, Byte age) {
-        this.name = name;
-        this.lastName = lastName;
-        this.age = age;
+    public User(String login, String password, List<Role> roles) {
+        this.login = login;
+        this.password = password;
+        this.roles = roles;
     }
+
 
     @Override
     public String toString() {
@@ -46,6 +48,11 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.login;
     }
 
     @Override

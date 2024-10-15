@@ -5,52 +5,64 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
-import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.RoleServiceImpl;
-import ru.kata.spring.boot_security.demo.service.UserService;
 import ru.kata.spring.boot_security.demo.service.UserServiceImpl;
 
 import javax.validation.Valid;
+import java.sql.SQLException;
 import java.util.List;
 
 @Controller
-//@RequestMapping("/users")
-public class UserController {
+public class AdminController {
 
     private UserServiceImpl userService;
     private RoleServiceImpl roleService;
 
     @Autowired
-    public UserController(UserServiceImpl userService, RoleServiceImpl roleService) {
+    public AdminController(UserServiceImpl userService, RoleServiceImpl roleService) {
         this.userService = userService;
         this.roleService = roleService;
     }
 
-    @GetMapping("/user")
-    public String listUser(Model model) {
-        return "user";
+    @GetMapping("/")
+    public String index() {
+        return "index";
     }
 
-    @GetMapping("/users")
+    @GetMapping("/create")
+    public String createOne() {
+        roleService.saveRole(new Role(Long.valueOf(1) ,"ROLE_ADMIN","админ"));
+        roleService.saveRole(new Role(Long.valueOf(2) ,"ROLE_USER","юзер"));
+        List<Role> role =  roleService.findAllRole();
+        User user = new User("admin","admin", role);
+        try {
+            userService.saveUser(user);
+        } catch (RuntimeException e) {
+            return "index";
+        }
+        return "index";
+    }
+
+    @GetMapping("/admin")
     public String listUsers(Model model) {
         List<User> users = userService.getAllUsers();
         model.addAttribute("users", users);
         return "users";
     }
 
-    @GetMapping("/users/edit")
+    @GetMapping("/admin/edit")
     public String addUser(@ModelAttribute("user") User user, Model model) {
-        System.out.println("Это из контроллера, из запроса id на добавление пользователя " + user.getId());
         if(user.getId() != null) {
             model.addAttribute("user", userService.getUserById(user.getId()));
         }
+        model.addAttribute("roles", roleService.findAllRole());
         return "edit";
     }
 
-    @PostMapping("/users/edit")
-    public String save(@Valid @ModelAttribute("user") User user, BindingResult bindingResult) {
-        System.out.println("Это из контроллера, из запроса id на изменение пользователя " + user.getId());
+    @PostMapping("/admin/edit")
+    public String save(@Valid @ModelAttribute("user") User user, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             return "edit.html";
         } else {
@@ -59,16 +71,13 @@ public class UserController {
             } else {
                 userService.updateUser(user);
             }
-            return "redirect:/users";
+            return "redirect:/admin";
         }
     }
 
-    @PostMapping(value = "/users/delete")
+    @PostMapping(value = "/admin/delete")
     public String deleteUser(@ModelAttribute("user") User user) {
-        System.out.println("Это из контроллера, из запроса id на удаление пользователя " + user.getId());
-        //System.out.println(user);
-
             userService.removeUserById(user.getId());
-        return "redirect:/users";
+        return "redirect:/admin";
     }
 }
