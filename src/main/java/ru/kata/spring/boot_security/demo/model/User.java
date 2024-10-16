@@ -34,9 +34,11 @@ public class User implements UserDetails {
     @Min(value=0, message = "Возраст не может быть менше 0")
     @Max(value=125, message = "Возраст не может быть больше 125")
     private Byte    age;
+
     @Column(unique=true)
     @Size(min = 1, message = "Минимальная длина 1 символ")
     private String  login;
+
     @Size(min = 1, message = "Минимальная длина 1 символ")
     private String  password;
 
