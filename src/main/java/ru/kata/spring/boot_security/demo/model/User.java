@@ -5,18 +5,17 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.validation.annotation.Validated;
+import ru.kata.spring.boot_security.demo.validation.ChekUnique;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 
 @Data
 @Entity
+@Validated
 @Table(name = "users")
 public class User implements UserDetails {
     @Id
@@ -37,6 +36,7 @@ public class User implements UserDetails {
 
     @Column(unique=true)
     @Size(min = 1, message = "Минимальная длина 1 символ")
+    @ChekUnique(value = "true", message = "Такой логин уже занят")
     private String  login;
 
     @Size(min = 1, message = "Минимальная длина 1 символ")
@@ -56,10 +56,17 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
-
     @Override
     public String toString() {
-        return String.format("%d, %s, %s, %d", getId(), getName(), getLastName(), getAge());
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", age=" + age +
+                ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                ", roles=" + roles +
+                '}';
     }
 
     @Override

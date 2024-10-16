@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@RestController
 @Controller
 public class AdminController {
 
@@ -71,14 +70,13 @@ public class AdminController {
     public String save(@Valid @ModelAttribute("user") User user, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("roles", roleService.findAllRole());
-            if (userService.ifLogin(user.getLogin())) {
-                model.addAttribute("errorMessage", "логин уже занят, укажите другой");
-            }
             return "edit";
         } else {
             if (user.getId() == null) {
+                System.out.println("Выполнится сохранение" + user.toString());
                 userService.saveUser(user);
             } else {
+                System.out.println("Выполнится апдейт " + user.toString());
                 userService.updateUser(user);
             }
             return "redirect:/admin";
