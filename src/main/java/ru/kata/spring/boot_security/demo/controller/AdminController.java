@@ -1,6 +1,8 @@
 package ru.kata.spring.boot_security.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,6 +17,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@RestController
 @Controller
 public class AdminController {
 
@@ -29,7 +32,7 @@ public class AdminController {
 
     @GetMapping(value = {"/" , "/index"})
     public String index() {
-        if (userService.ifLogin()) {
+        if (userService.ifLogin("admin")) {
             return "redirect:/user";
         }
         return "index";
@@ -37,7 +40,7 @@ public class AdminController {
 
     @PostMapping("/create")
     public String createOne() {
-        if (userService.ifLogin()) {
+        if (userService.ifLogin("login")) {
             return "redirect:/user";
         }
         roleService.saveRole(new Role(1l ,"ROLE_ADMIN","админ"));
@@ -68,6 +71,9 @@ public class AdminController {
     public String save(@Valid @ModelAttribute("user") User user, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("roles", roleService.findAllRole());
+            if (userService.ifLogin(user.getLogin())) {
+                model.addAttribute("errorMessage", "логин уже занят, укажите другой");
+            }
             return "edit";
         } else {
             if (user.getId() == null) {

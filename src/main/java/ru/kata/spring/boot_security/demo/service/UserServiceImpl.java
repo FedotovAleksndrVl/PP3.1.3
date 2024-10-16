@@ -69,8 +69,8 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
-    public boolean ifLogin() {
-        if (userRepository.findByLogin("admin").isEmpty()) {
+    public boolean ifLogin(String login) {
+        if (userRepository.findByLogin(login).isEmpty()) {
             return false;
         }
             return true;

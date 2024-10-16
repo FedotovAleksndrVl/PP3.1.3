@@ -18,6 +18,6 @@ public interface UserService {
 
     void updateUser(User user);
 
-    boolean ifLogin ();
+    boolean ifLogin (String login);
 
 }
