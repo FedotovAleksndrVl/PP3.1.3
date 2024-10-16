@@ -17,8 +17,8 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class UserServiceImpl implements UserDetailsService, UserService {
 
-    private UserRepository userRepository;
-    private PasswordEncoder passwordEncoder;
+    final private UserRepository userRepository;
+    final private PasswordEncoder passwordEncoder;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
@@ -35,14 +35,12 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Override
     public User getUserById(Long id){
-        User user = userRepository.findById(id).get();
-        return user;
+        return userRepository.findById(id).get();
     }
 
     @Override
     public User getUserByLogin(String login){
-        User user = userRepository.findByLogin(login).get();
-        return user;
+        return userRepository.findByLogin(login).get();
     }
 
     @Override
@@ -61,14 +59,12 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     @Override
     @Transactional
     public void updateUser(User user) {
-
         User existingUser = userRepository.findById(user.getId()).get();
         if (user.getPassword().isEmpty()) {
             user.setPassword(existingUser.getPassword());
         } else {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
-
         userRepository.save(user);
     }
 

@@ -16,8 +16,8 @@ import java.util.List;
 @Controller
 public class AdminController {
 
-    private UserServiceImpl userService;
-    private RoleServiceImpl roleService;
+    final private UserServiceImpl userService;
+    final private RoleServiceImpl roleService;
 
     @Autowired
     public AdminController(UserServiceImpl userService, RoleServiceImpl roleService) {
@@ -38,8 +38,8 @@ public class AdminController {
         if (userService.ifLogin()) {
             return "redirect:/user";
         }
-        roleService.saveRole(new Role(Long.valueOf(1) ,"ROLE_ADMIN","админ"));
-        roleService.saveRole(new Role(Long.valueOf(2) ,"ROLE_USER","юзер"));
+        roleService.saveRole(new Role(1l ,"ROLE_ADMIN","админ"));
+        roleService.saveRole(new Role(2l ,"ROLE_USER","юзер"));
         List<Role> role =  roleService.findAllRole();
         User user = new User("admin","admin", role);
         userService.saveUser(user);

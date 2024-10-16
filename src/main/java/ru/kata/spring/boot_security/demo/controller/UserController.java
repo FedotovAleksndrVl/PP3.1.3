@@ -10,7 +10,7 @@ import java.security.Principal;
 @Controller
 public class UserController {
 
-    private UserServiceImpl userService;
+    final private UserServiceImpl userService;
 
     @Autowired
     public UserController(UserServiceImpl userService) {
@@ -18,7 +18,7 @@ public class UserController {
     }
 
     @GetMapping("/user")
-    public String user(Model model, Principal principal) {        ;
+    public String user(Model model, Principal principal) {
         model.addAttribute("users", userService.getUserByLogin(principal.getName()));
         return "user";
     }
