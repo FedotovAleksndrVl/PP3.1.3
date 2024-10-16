@@ -41,7 +41,7 @@
             <label for="age">Укажите пароль: </label>
         </td><td>
             <input type="password" th:field="*{password}" id="password"/>
-            <input type="password" th:errors="*{password}"/>
+            <input type="hidden" th:errors="*{password}"/>
         </td></tr>
 
         <tr><td>
@@ -51,7 +51,6 @@
                    th:text="${role.value}"
                    th:value="${role.id}"
                    th:field="*{roles}"/>
-            <br>
         </td></tr>
     </table>
     <input type="submit" value="Применить"/>
@@ -59,6 +58,5 @@
 <form method="get" action="/admin">
     <input type="submit" value="Отмена"/>
 </form>
-
 </body>
 </html>

@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,6 +40,12 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
+    public User getUserByLogin(String login){
+        User user = userRepository.findByLogin(login).get();
+        return user;
+    }
+
+    @Override
     @Transactional
     public void removeUserById(long id) {
         if (userRepository.findById(id).isPresent()) {
@@ -67,12 +72,20 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         userRepository.save(user);
     }
 
+    @Override
+    public boolean ifLogin() {
+        if (userRepository.findByLogin("admin").isEmpty()) {
+            return false;
+        }
+            return true;
+    }
+
     @Transactional
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> user = userRepository.findByLogin(username);
+    public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
+        Optional<User> user = userRepository.findByLogin(login);
         if (user.isEmpty()) {
-            throw new UsernameNotFoundException(String.format("User '%s' not found", username));
+            throw new UsernameNotFoundException(String.format("User '%s' not found", login));
         }
         return user.get();
     }

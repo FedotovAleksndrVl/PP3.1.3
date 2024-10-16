@@ -11,7 +11,6 @@ import ru.kata.spring.boot_security.demo.service.RoleServiceImpl;
 import ru.kata.spring.boot_security.demo.service.UserServiceImpl;
 
 import javax.validation.Valid;
-import java.sql.SQLException;
 import java.util.List;
 
 @Controller
@@ -26,23 +25,25 @@ public class AdminController {
         this.roleService = roleService;
     }
 
-    @GetMapping("/")
+    @GetMapping(value = {"/" , "/index"})
     public String index() {
+        if (userService.ifLogin()) {
+            return "redirect:/user";
+        }
         return "index";
     }
 
-    @GetMapping("/create")
+    @PostMapping("/create")
     public String createOne() {
+        if (userService.ifLogin()) {
+            return "redirect:/user";
+        }
         roleService.saveRole(new Role(Long.valueOf(1) ,"ROLE_ADMIN","админ"));
         roleService.saveRole(new Role(Long.valueOf(2) ,"ROLE_USER","юзер"));
         List<Role> role =  roleService.findAllRole();
         User user = new User("admin","admin", role);
-        try {
-            userService.saveUser(user);
-        } catch (RuntimeException e) {
-            return "index";
-        }
-        return "index";
+        userService.saveUser(user);
+        return "redirect:/user";
     }
 
     @GetMapping("/admin")
@@ -64,7 +65,8 @@ public class AdminController {
     @PostMapping("/admin/edit")
     public String save(@Valid @ModelAttribute("user") User user, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            return "edit.html";
+            model.addAttribute("roles", roleService.findAllRole());
+            return "edit";
         } else {
             if (user.getId() == null) {
                 userService.saveUser(user);
