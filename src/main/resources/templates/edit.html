@@ -10,7 +10,7 @@
 
 <form th:method="POST" th:action="@{/admin/edit}" th:object="${user}">
     <table>
-        <input type="hidden" th:field="*{id}" id="id">
+        <input type="hidden" th:field="*{id}" id="id"/>
         <tr><td>
             <label for="name">Укажите имя: </label>
         </td><td>
