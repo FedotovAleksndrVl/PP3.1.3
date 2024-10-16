@@ -20,8 +20,8 @@ import java.util.stream.Collectors;
 @Controller
 public class AdminController {
 
-    final private UserServiceImpl userService;
-    final private RoleServiceImpl roleService;
+    private UserServiceImpl userService;
+    private RoleServiceImpl roleService;
 
     @Autowired
     public AdminController(UserServiceImpl userService, RoleServiceImpl roleService) {
@@ -68,15 +68,17 @@ public class AdminController {
 
     @PostMapping("/admin/edit")
     public String save(@Valid @ModelAttribute("user") User user, BindingResult bindingResult, Model model) {
+        model.addAttribute("roles", roleService.findAllRole());
         if (bindingResult.hasErrors()) {
-            model.addAttribute("roles", roleService.findAllRole());
             return "edit";
         } else {
             if (user.getId() == null) {
-                System.out.println("Выполнится сохранение" + user.toString());
+                if (userService.ifLogin(user.getLogin())) {
+                    model.addAttribute("errorMessage", "Логин уже занят");
+                    return "edit";
+                }
                 userService.saveUser(user);
             } else {
-                System.out.println("Выполнится апдейт " + user.toString());
                 userService.updateUser(user);
             }
             return "redirect:/admin";

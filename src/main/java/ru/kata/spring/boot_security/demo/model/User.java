@@ -5,8 +5,6 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.validation.annotation.Validated;
-import ru.kata.spring.boot_security.demo.validation.ChekUnique;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -15,7 +13,6 @@ import java.util.Set;
 
 @Data
 @Entity
-@Validated
 @Table(name = "users")
 public class User implements UserDetails {
     @Id
@@ -36,7 +33,6 @@ public class User implements UserDetails {
 
     @Column(unique=true)
     @Size(min = 1, message = "Минимальная длина 1 символ")
-    @ChekUnique(value = "true", message = "Такой логин уже занят")
     private String  login;
 
     @Size(min = 1, message = "Минимальная длина 1 символ")

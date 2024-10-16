@@ -17,8 +17,8 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class UserServiceImpl implements UserDetailsService, UserService {
 
-    final UserRepository userRepository;
-    final PasswordEncoder passwordEncoder;
+    final private UserRepository userRepository;
+    final private PasswordEncoder passwordEncoder;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {

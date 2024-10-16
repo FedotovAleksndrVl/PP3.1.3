@@ -23,6 +23,7 @@
             <input type="text" th:field="*{lastName}" id="lastName"/>
             <input type="hidden" th:errors="*{lastName}"/>
         <td></td>
+
         <tr><td>
             <label for="age">Укажите возраст: </label>
         </td><td>
@@ -34,6 +35,7 @@
             <label for="age">Укажите логин: </label>
         </td><td>
             <input type="text" th:field="*{login}" id="login"/>
+            <input type="hidden" th:text="${errorMessage}"/>
             <input type="hidden" th:errors="*{login}"/>
         </td></tr>
 
