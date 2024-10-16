@@ -70,10 +70,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Override
     public boolean ifLogin(String login) {
-        if (userRepository.findByLogin(login).isEmpty()) {
-            return false;
-        }
-            return true;
+            return !(userRepository.findByLogin(login).isEmpty());
     }
 
     @Transactional

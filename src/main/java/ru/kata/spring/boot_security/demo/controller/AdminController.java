@@ -1,8 +1,6 @@
 package ru.kata.spring.boot_security.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,13 +13,13 @@ import ru.kata.spring.boot_security.demo.service.UserServiceImpl;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
+
 
 @Controller
 public class AdminController {
 
-    private UserServiceImpl userService;
-    private RoleServiceImpl roleService;
+    final private UserServiceImpl userService;
+    final private RoleServiceImpl roleService;
 
     @Autowired
     public AdminController(UserServiceImpl userService, RoleServiceImpl roleService) {
