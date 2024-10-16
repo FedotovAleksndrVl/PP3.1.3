@@ -13,6 +13,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
@@ -41,13 +42,13 @@ public class User implements UserDetails {
 
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @Fetch(FetchMode.JOIN)
-    private List<Role> roles;
+    private Set<Role> roles;
 
     public User() {
 
     }
 
-    public User(String login, String password, List<Role> roles) {
+    public User(String login, String password, Set<Role> roles) {
         this.login = login;
         this.password = password;
         this.roles = roles;

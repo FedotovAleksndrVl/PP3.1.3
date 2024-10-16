@@ -12,6 +12,8 @@ import ru.kata.spring.boot_security.demo.service.UserServiceImpl;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Controller
 public class AdminController {
@@ -40,7 +42,7 @@ public class AdminController {
         }
         roleService.saveRole(new Role(1l ,"ROLE_ADMIN","админ"));
         roleService.saveRole(new Role(2l ,"ROLE_USER","юзер"));
-        List<Role> role =  roleService.findAllRole();
+        Set<Role> role =  roleService.findAllRole();
         User user = new User("admin","admin", role);
         userService.saveUser(user);
         return "redirect:/user";
