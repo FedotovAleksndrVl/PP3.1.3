@@ -145,10 +145,11 @@
                                                                                class="form-label justify-content-lg-center justify-content-xl-center">
                                                                             <b>Email</b></label>
                                                                         <input th:name="login"
-                                                                               class="form-control justify-content-lg-center align-items-lg-center"
+                                                                               class="form-control form-control-sm justify-content-lg-center align-items-lg-center"
                                                                                th:type="text" id="editEmail"
                                                                                th:value="*{login}"
-                                                                               style="width: 50%">
+                                                                               style="width: 50%"
+                                                                               required>
                                                                     </div>
                                                                     <div class="col d-flex flex-column align-items-lg-center align-items-xl-center">
                                                                         <label for="editPassword"
@@ -233,6 +234,7 @@
                                                                                disabled=""
                                                                                th:value="*{firstName}"
                                                                                style="width: 50%">
+                                                                        <input type="hidden" th:text="${errorMessage}"/>
                                                                     </div>
                                                                     <div class="col d-flex flex-column align-items-lg-center align-items-xl-center">
                                                                         <label for="deleteLastName"
@@ -258,10 +260,10 @@
                                                                         <label for="deleteEmail"
                                                                                class="form-label justify-content-lg-center justify-content-xl-center">
                                                                             <b>Email</b></label>
-                                                                        <input th:name="username"
+                                                                        <input th:name="login"
                                                                                class="form-control justify-content-lg-center align-items-lg-center"
                                                                                th:type="text" id="deleteEmail" disabled=""
-                                                                               th:value="*{username}"
+                                                                               th:value="*{login}"
                                                                                style="width: 50%">
                                                                     </div>
                                                                     <div class="col d-flex flex-column align-items-lg-center align-items-xl-center">
