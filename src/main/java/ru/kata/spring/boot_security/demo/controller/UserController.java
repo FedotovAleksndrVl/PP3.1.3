@@ -19,6 +19,7 @@ public class UserController {
 
     @GetMapping("/user")
     public String user(Model model, Principal principal) {
+        System.out.println("asdfghjklvkndkcvjfvslvdfml;kvsfkjbkjfsbfgjkb");
         model.addAttribute("users", userService.getUserByLogin(principal.getName()));
         return "user";
     }
