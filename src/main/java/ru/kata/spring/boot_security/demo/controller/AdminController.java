@@ -11,6 +11,7 @@ import ru.kata.spring.boot_security.demo.service.RoleServiceImpl;
 import ru.kata.spring.boot_security.demo.service.UserServiceImpl;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 import java.util.Set;
 
@@ -27,6 +28,19 @@ public class AdminController {
         this.roleService = roleService;
     }
 
+    @PostMapping("/create")
+    public String createOne() {
+        if (userService.ifLogin("login")) {
+            return "redirect:/user";
+        }
+        roleService.saveRole(new Role("ROLE_ADMIN", "админ"));
+        roleService.saveRole(new Role("ROLE_USER","юзер"));
+        Set<Role> role =  roleService.findAllRole();
+        User user = new User("admin","admin", role);
+        userService.saveUser(user);
+        return "redirect:/user";
+    }
+
     @GetMapping(value = {"/" , "/index"})
     public String index() {
         if (userService.ifLogin("admin")) {
@@ -35,6 +49,16 @@ public class AdminController {
         return "index";
     }
 
+    @GetMapping("/admin")
+    public String listUsers(Principal principal, Model model) {
+        model.addAttribute("user", new User());
+        model.addAttribute("admin", userService.getAllUsers());
+        model.addAttribute("roles", roleService.findAllRole());
+        model.addAttribute("thisUser", userService.getUserByLogin(principal.getName()));
+        return "admin";
+    }
+
+    /*
     @PostMapping("/create")
     public String createOne() {
         if (userService.ifLogin("login")) {
@@ -52,7 +76,7 @@ public class AdminController {
     public String listUsers(Model model) {
         List<User> users = userService.getAllUsers();
         model.addAttribute("users", users);
-        return "users";
+        return "admin";
     }
 
     @GetMapping("/admin/edit")
@@ -88,4 +112,6 @@ public class AdminController {
             userService.removeUserById(user.getId());
         return "redirect:/admin";
     }
+    */
+
 }
