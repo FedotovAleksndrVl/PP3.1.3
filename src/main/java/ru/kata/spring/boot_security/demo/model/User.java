@@ -21,7 +21,7 @@ public class User implements UserDetails {
 
     @Pattern(regexp = "^[A-Za-zА-Яа-яЁё]+$", message = "Имя должно содержать только буквы.")
     @Size(min = 1, message = "Минимальная длина 1 символ")
-    private String  fistName;
+    private String  name;
 
     @Pattern(regexp = "^[A-Za-zА-Яа-яЁё]+$", message = "Имя должно содержать только буквы.")
     @Size(min = 1, message = "Минимальная длина 1 символ")
@@ -31,7 +31,7 @@ public class User implements UserDetails {
     @Max(value=125, message = "Возраст не может быть больше 125")
     private Byte    age;
 
-    @Column(unique=true, name = "email")
+    @Column(unique=true)
     @Size(min = 1, message = "Минимальная длина 1 символ")
     private String  login;
 
@@ -56,7 +56,7 @@ public class User implements UserDetails {
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", name='" + fistName + '\'' +
+                ", name='" + name + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", age=" + age +
                 ", login='" + login + '\'' +
