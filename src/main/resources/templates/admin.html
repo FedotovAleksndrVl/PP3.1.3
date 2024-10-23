@@ -28,37 +28,295 @@
 
 <div class="container-fluid">
     <div class="row">
+        <div class="d-flex align-items-start">
+            <div class="col-lg-1 col-md-3">
 
-        <div class="col-lg-2 col-md-3">
-            <nav class="nav nav-pills nav-fill flex-column">
-                <a class="nav-link active" aria-selected="true">Админ</a>
-                <a class="nav-link" aria-selected="true">Юзер</a>
-            </nav>
-        </div>
+                <div class="nav flex-column nav-pills me-3" id="myTabM" role="tablist" aria-orientation="vertical">
+                    <button class="nav-link active" id="admin-tab" data-bs-toggle="tab" data-bs-target="#admin" type="button" role="tab" aria-controls="admin" aria-selected="true">Админ</button>
+                    <button class="nav-link" id="user-tab" data-bs-toggle="tab" data-bs-target="#user" type="button" role="tab" aria-controls="user" aria-selected="false">Юзер</button>
+                </div>
 
-        <div class="col-lg-8  col-md-10">
-            <div>
-                <h1>Администрирование</h1>
             </div>
 
-            <ul class="nav nav-tabs" id="myTab" role="tablist">
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="users-tab" data-bs-toggle="tab" data-bs-target="#users" type="button" role="tab" aria-controls="home" aria-selected="true">Пользователи</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="edit-tab" data-bs-toggle="tab" data-bs-target="#edit" type="button" role="tab" aria-controls="profile" aria-selected="false">Создать нового</button>
-                </li>
-            </ul>
+            <div class="col-lg-8  col-md-10">
 
-            <div class="tab-content" id="myTabContent">
-                <div class="tab-pane fade show active" id="users" role="tabpanel" aria-labelledby="users-tab">
-                    1
+                <div class="tab-content" id="v-pills-tabContent">
+                    <div class="tab-pane fade show active" id="admin" role="tabpanel" aria-labelledby="admin-tab">
+                        <div>
+                            <h1>Администрирование</h1>
+                        </div>
+
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="users-tab" data-bs-toggle="tab" data-bs-target="#users" type="button" role="tab" aria-controls="users" aria-selected="true">Пользователи</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="edit-tab" data-bs-toggle="tab" data-bs-target="#edit" type="button" role="tab" aria-controls="edit" aria-selected="false">Создать нового</button>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade show active" id="users" role="tabpanel" aria-labelledby="users-tab">
+                                <table class="table table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">ИД</th>
+                                        <th scope="col">Имя</th>
+                                        <th scope="col">Фамилия</th>
+                                        <th scope="col">Возраст</th>
+                                        <th scope="col">Email</th>
+                                        <th scope="col">Роль</th>
+                                        <th scope="col">Правка</th>
+                                        <th scope="col">Удалить</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="user : ${users}">
+                                        <td th:text="${user.id}"></td>
+                                        <td th:text="${user.firstName}"></td>
+                                        <td th:text="${user.lastName}"></td>
+                                        <td th:text="${user.age}"></td>
+                                        <td th:text="${user.login}"></td>
+                                        <td th:text="${#strings.arrayJoin(user.roles, ' ')}">Role
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-info text-white" data-bs-toggle="modal"
+                                                    th:attr="data-bs-target=${'#editModal'+ user.id}">Edit
+                                            </button>
+                                            <div class="modal fade" th:id="${'editModal'+ user.id}" tabindex="-1" aria-labelledby="edit" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+
+                                                        <form th:method="PATCH"
+                                                              th:action="@{/admin}"
+                                                              th:object="${user}">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="EditModel">Edit
+                                                                    User</h5>
+                                                                <button type="button" class="btn-close"
+                                                                        data-bs-dismiss="modal"
+                                                                        aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="mb-3">
+                                                                    <div class="col d-flex flex-column align-items-lg-center align-items-xl-center">
+                                                                        <label for="id"
+                                                                               class="form-label justify-content-lg-center justify-content-xl-center">
+                                                                            <b>ID</b></label>
+                                                                        <input th:name="id"
+                                                                               class="form-control justify-content-lg-center align-items-lg-center"
+                                                                               th:type="text" id="id"
+                                                                               th:value="*{id}"
+                                                                               style="width: 50%"
+                                                                               readonly>
+                                                                    </div>
+                                                                    <div class="col d-flex flex-column align-items-lg-center align-items-xl-center">
+                                                                        <label for="editFirstName"
+                                                                               class="form-label justify-content-lg-center justify-content-xl-center">
+                                                                            <b>First name</b></label>
+                                                                        <input th:name="firstName"
+                                                                               class="form-control justify-content-lg-center align-items-lg-center"
+                                                                               th:type="text" id="editFirstName"
+                                                                               th:value="*{firstName}"
+                                                                               style="width: 50%">
+                                                                    </div>
+                                                                    <div class="col d-flex flex-column align-items-lg-center align-items-xl-center">
+                                                                        <label for="editLastName"
+                                                                               class="form-label justify-content-lg-center justify-content-xl-center">
+                                                                            <b>Last name</b></label>
+                                                                        <input th:name="lastName"
+                                                                               class="form-control justify-content-lg-center align-items-lg-center"
+                                                                               th:type="text" id="editLastName"
+                                                                               th:value="*{lastName}"
+                                                                               style="width: 50%">
+                                                                    </div>
+                                                                    <div class="col d-flex flex-column align-items-lg-center align-items-xl-center">
+                                                                        <label for="editAge"
+                                                                               class="form-label justify-content-lg-center justify-content-xl-center">
+                                                                            <b>Age</b></label>
+                                                                        <input th:name="age"
+                                                                               class="form-control justify-content-lg-center align-items-lg-center"
+                                                                               th:type="text" id="editAge"
+                                                                               th:value="*{age}"
+                                                                               style="width: 50%">
+                                                                    </div>
+                                                                    <div class="col d-flex flex-column align-items-lg-center align-items-xl-center">
+                                                                        <label for="editEmail"
+                                                                               class="form-label justify-content-lg-center justify-content-xl-center">
+                                                                            <b>Email</b></label>
+                                                                        <input th:name="login"
+                                                                               class="form-control justify-content-lg-center align-items-lg-center"
+                                                                               th:type="text" id="editEmail"
+                                                                               th:value="*{login}"
+                                                                               style="width: 50%">
+                                                                    </div>
+                                                                    <div class="col d-flex flex-column align-items-lg-center align-items-xl-center">
+                                                                        <label for="editPassword"
+                                                                               class="form-label justify-content-lg-center justify-content-xl-center">
+                                                                            <b>Password</b></label>
+                                                                        <input th:name="password"
+                                                                               class="form-control justify-content-lg-center align-items-lg-center"
+                                                                               th:type="password" id="editPassword"
+                                                                               style="width: 50%">
+                                                                    </div>
+                                                                    <div class="col d-flex flex-column align-items-lg-center align-items-xl-center">
+                                                                        <label for="editRole"
+                                                                               class="form-label justify-content-lg-center justify-content-xl-center"><b>
+                                                                            Role</b></label>
+                                                                        <select th:name="roles"
+                                                                                class="form-select justify-content-lg-center align-items-lg-center"
+                                                                                id="editRole" multiple="multiple"
+                                                                                style="width: 50%">
+                                                                            <option th:each="role: ${roles}"
+                                                                                    th:value="${role.id}"
+                                                                                    th:selected="${user.roles.contains(role)}">
+                                                                                <th:block th:text="${role.toString()}">
+                                                                                </th:block>
+                                                                            </option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button class="btn btn-secondary" type="button"
+                                                                        data-bs-dismiss="modal">Close
+                                                                </button>
+                                                                <button class="btn btn-primary" type="submit">Edit</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-danger text-white" data-bs-toggle="modal"
+                                                    th:attr="data-bs-target=${'#deleteModal'+ user.id}">Delete
+                                            </button>
+                                            <!-- Модальное окно с формой по изменению пользователя-->
+                                            <div class="modal fade" th:id="${'deleteModal' + user.id}" tabindex="-1"
+                                                 aria-labelledby="delete" aria-hidden="true">
+
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+
+                                                        <form th:method="DELETE"
+                                                              th:action="@{/admin}"
+                                                              th:object="${user}">
+                                                            <div class="modal-header">
+                                                                <h4 class="modal-title" id="DeleteModel">Delete user
+                                                                    User</h4>
+                                                                <button type="button" class="btn-close"
+                                                                        data-bs-dismiss="modal"
+                                                                        aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="mb-3">
+                                                                    <div class="col d-flex flex-column align-items-lg-center align-items-xl-center">
+                                                                        <label for="deleteId"
+                                                                               class="form-label justify-content-lg-center justify-content-xl-center">
+                                                                            <b>ID</b></label>
+                                                                        <input th:name="id"
+                                                                               class="form-control justify-content-lg-center align-items-lg-center"
+                                                                               th:type="text"
+                                                                               id="deleteId"
+                                                                               th:value="*{id}"
+                                                                               style="width: 50%"
+                                                                               readonly>
+                                                                    </div>
+                                                                    <div class="col d-flex flex-column align-items-lg-center align-items-xl-center">
+                                                                        <label for="deleteFirstName"
+                                                                               class="form-label justify-content-lg-center justify-content-xl-center">
+                                                                            <b>First name</b></label>
+                                                                        <input th:name="firstName"
+                                                                               class="form-control justify-content-lg-center align-items-lg-center"
+                                                                               th:type="text" id="deleteFirstName"
+                                                                               disabled=""
+                                                                               th:value="*{firstName}"
+                                                                               style="width: 50%">
+                                                                    </div>
+                                                                    <div class="col d-flex flex-column align-items-lg-center align-items-xl-center">
+                                                                        <label for="deleteLastName"
+                                                                               class="form-label justify-content-lg-center justify-content-xl-center">
+                                                                            <b>Last name</b></label>
+                                                                        <input th:name="lastName"
+                                                                               class="form-control justify-content-lg-center align-items-lg-center"
+                                                                               th:type="text" id="deleteLastName"
+                                                                               disabled=""
+                                                                               th:value="*{lastName}"
+                                                                               style="width: 50%">
+                                                                    </div>
+                                                                    <div class="col d-flex flex-column align-items-lg-center align-items-xl-center">
+                                                                        <label for="deleteAge"
+                                                                               class="form-label justify-content-lg-center justify-content-xl-center">
+                                                                            <b>Age</b></label>
+                                                                        <input th:name="age"
+                                                                               class="form-control justify-content-lg-center align-items-lg-center"
+                                                                               th:type="text" id="deleteAge" disabled=""
+                                                                               th:value="${user.age}" style="width: 50%">
+                                                                    </div>
+                                                                    <div class="col d-flex flex-column align-items-lg-center align-items-xl-center">
+                                                                        <label for="deleteEmail"
+                                                                               class="form-label justify-content-lg-center justify-content-xl-center">
+                                                                            <b>Email</b></label>
+                                                                        <input th:name="username"
+                                                                               class="form-control justify-content-lg-center align-items-lg-center"
+                                                                               th:type="text" id="deleteEmail" disabled=""
+                                                                               th:value="*{username}"
+                                                                               style="width: 50%">
+                                                                    </div>
+                                                                    <div class="col d-flex flex-column align-items-lg-center align-items-xl-center">
+                                                                        <label for="deleteRole"
+                                                                               class="form-label justify-content-lg-center justify-content-xl-center"><b>
+                                                                            Role</b></label>
+                                                                        <select th:name="roles"
+                                                                                class="form-select justify-content-lg-center align-items-lg-center"
+                                                                                id="deleteRole" multiple="multiple"
+                                                                                disabled=""
+                                                                                style="width: 50%">
+                                                                            <option th:each="role: ${roles}"
+                                                                                    th:value="${role.id}"
+                                                                                    th:selected="${user.roles.contains(role)}">
+                                                                                <th:block th:text="${role.toString()}">
+                                                                                </th:block>
+                                                                            </option>
+                                                                        </select>
+                                                                    </div>
+
+
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button class="btn btn-secondary" type="button"
+                                                                        data-bs-dismiss="modal">Close
+                                                                </button>
+                                                                <button class="btn btn-danger" type="submit">Delete</button>
+                                                            </div>
+
+
+                                                        </form>
+
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="tab-pane fade" id="edit" role="tabpanel" aria-labelledby="edit-tab">
+                                2
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="user" role="tabpanel" aria-labelledby="user-tab">
+
+                    </div>
 
                 </div>
-                <div class="tab-pane fade" id="edit" role="tabpanel" aria-labelledby="edit-tab">
-                    2
 
-                </div>
+
             </div>
         </div>
     </div>

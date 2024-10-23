@@ -50,10 +50,24 @@ public class AdminController {
     @GetMapping("/admin")
     public String listUsers(Principal principal, Model model) {
         model.addAttribute("user", new User());
-        model.addAttribute("admin", userService.getAllUsers());
+        model.addAttribute("users", userService.getAllUsers());
         model.addAttribute("roles", roleService.findAllRole());
         model.addAttribute("thisUser", userService.getUserByLogin(principal.getName()));
         return "admin";
+    }
+
+    @PatchMapping("/admin")
+    public String update(@ModelAttribute("user") User user) {
+        System.out.println(user);
+        userService.updateUser(user);
+        return "redirect:/admin";
+    }
+
+    @DeleteMapping("/admin")
+    public String deleteUser(@ModelAttribute("user") User user) {
+        System.out.println(user);
+        userService.removeUserById(user.getId());
+        return "redirect:/admin";
     }
 
     /*
