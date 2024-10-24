@@ -30,22 +30,17 @@
     <div class="row">
         <div class="d-flex align-items-start">
             <div class="col-lg-1 col-md-3">
-
                 <div class="nav flex-column nav-pills me-3" id="myTabM" role="tablist" aria-orientation="vertical">
-                    <button class="nav-link active" id="admin-tab" data-bs-toggle="tab" data-bs-target="#admin" type="button" role="tab" aria-controls="admin" aria-selected="true">Админ</button>
+                    <button class="nav-link active" id="admin-tab" data-bs-toggle="tab" data-bs-target="#admin" type="button" role="tab" aria-controls="admin" aria-selected="true" >Админ</button>
                     <button class="nav-link" id="user-tab" data-bs-toggle="tab" data-bs-target="#user" type="button" role="tab" aria-controls="user" aria-selected="false">Юзер</button>
                 </div>
-
             </div>
-
-            <div class="col-lg-8  col-md-10">
-
+            <div class="col-lg-3  col-md-5">
                 <div class="tab-content" id="v-pills-tabContent">
                     <div class="tab-pane fade show active" id="admin" role="tabpanel" aria-labelledby="admin-tab">
                         <div>
-                            <h1>Администрирование</h1>
+                            <h3>Администрирование</h3>
                         </div>
-
                         <ul class="nav nav-tabs" id="myTab" role="tablist">
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link active" id="users-tab" data-bs-toggle="tab" data-bs-target="#users" type="button" role="tab" aria-controls="users" aria-selected="true">Пользователи</button>
@@ -54,8 +49,7 @@
                                 <button class="nav-link" id="edit-tab" data-bs-toggle="tab" data-bs-target="#edit" type="button" role="tab" aria-controls="edit" aria-selected="false">Создать нового</button>
                             </li>
                         </ul>
-
-                        <div class="tab-content" id="myTabContent">
+                        <div class="tab-content" id="myTabContents">
                             <div class="tab-pane fade show active" id="users" role="tabpanel" aria-labelledby="users-tab">
                                 <table class="table table-striped">
                                     <thead>
@@ -84,7 +78,6 @@
                                             <div class="modal fade" th:id="${'editModal'+ user.id}" tabindex="-1" aria-labelledby="edit" aria-hidden="true">
                                                 <div class="modal-dialog" role="document">
                                                     <div class="modal-content">
-
                                                         <form th:method="PATCH" th:action="@{/admin}" th:object="${user}">
                                                             <div class="modal-header">
                                                                 <h5 class="modal-title" id="EditModel">Изменить пользователя</h5>
@@ -95,48 +88,48 @@
                                                                     <div class="col d-flex flex-column align-items-lg-center align-items-xl-center">
                                                                         <label for="id" class="form-label justify-content-lg-center justify-content-xl-center"><b>ИД</b></label>
                                                                         <input id="id" class="form-control justify-content-lg-center align-items-lg-center" style="width: 50%" readonly
-                                                                               th:name="id"
-                                                                               th:type="text"
+                                                                               name="id"
+                                                                               type="text"
                                                                                th:value="*{id}">
                                                                     </div>
                                                                     <div class="col d-flex flex-column align-items-lg-center align-items-xl-center">
                                                                         <label for="editFirstName" class="form-label justify-content-lg-center justify-content-xl-center"><b>Имя</b></label>
-                                                                        <input id="editFirstName" class="form-control justify-content-lg-center align-items-lg-center" style="width: 50%"
-                                                                               th:name="firstName"
-                                                                               th:type="text"
+                                                                        <input id="editFirstName" class="form-control justify-content-lg-center align-items-lg-center" style="width: 50%" required
+                                                                               name="firstName"
+                                                                               type="text"
                                                                                th:value="*{firstName}">
                                                                     </div>
                                                                     <div class="col d-flex flex-column align-items-lg-center align-items-xl-center">
                                                                         <label for="editLastName" class="form-label justify-content-lg-center justify-content-xl-center"><b>Фамилия</b></label>
-                                                                        <input id="editLastName" class="form-control justify-content-lg-center align-items-lg-center" style="width: 50%"
-                                                                               th:name="lastName"
-                                                                               th:type="text"
+                                                                        <input id="editLastName" class="form-control justify-content-lg-center align-items-lg-center" style="width: 50%" required
+                                                                               name="lastName"
+                                                                               type="text"
                                                                                th:value="*{lastName}">
                                                                     </div>
                                                                     <div class="col d-flex flex-column align-items-lg-center align-items-xl-center">
                                                                         <label for="editAge" class="form-label justify-content-lg-center justify-content-xl-center"><b>Возраст</b></label>
-                                                                        <input id="editAge" class="form-control justify-content-lg-center align-items-lg-center" style="width: 50%"
-                                                                               th:name="age"
-                                                                               th:type="number"
+                                                                        <input id="editAge" class="form-control justify-content-lg-center align-items-lg-center" style="width: 50%" required
+                                                                               name="age"
+                                                                               type="number"
                                                                                th:value="*{age}">
                                                                     </div>
                                                                     <div class="col d-flex flex-column align-items-lg-center align-items-xl-center">
                                                                         <label for="editEmail" class="form-label justify-content-lg-center justify-content-xl-center"><b>Електронная почта</b></label>
-                                                                        <input id="editEmail" class="form-control form-control-sm justify-content-lg-center align-items-lg-center" style="width: 50%"
-                                                                               th:name="login"
-                                                                               th:type="email"
+                                                                        <input id="editEmail" class="form-control form-control-sm justify-content-lg-center align-items-lg-center" style="width: 50%" required
+                                                                               name="login"
+                                                                               type="email"
                                                                                th:value="*{login}">
                                                                     </div>
                                                                     <div class="col d-flex flex-column align-items-lg-center align-items-xl-center">
                                                                         <label for="editPassword"class="form-label justify-content-lg-center justify-content-xl-center"><b>Пароль</b></label>
-                                                                        <input id="editPassword" class="form-control justify-content-lg-center align-items-lg-center" style="width: 50%"
-                                                                               th:name="password"
+                                                                        <input id="editPassword" class="form-control justify-content-lg-center align-items-lg-center" style="width: 50%" required
+                                                                               name="password"
                                                                                th:type="password">
                                                                     </div>
                                                                     <div class="col d-flex flex-column align-items-lg-center align-items-xl-center">
                                                                         <label for="editRole" class="form-label justify-content-lg-center justify-content-xl-center"><b>Роли</b></label>
-                                                                        <select id="editRole" class="form-select justify-content-lg-center align-items-lg-center" multiple="multiple"style="width: 50%"
-                                                                                th:name="roles">
+                                                                        <select id="editRole" class="form-select justify-content-lg-center align-items-lg-center" multiple="multiple"style="width: 50%" required
+                                                                                name="roles">
                                                                             <option th:each="role: ${roles}"
                                                                                     th:value="${role.id}"
                                                                                     th:selected="${user.roles.contains(role)}">
@@ -174,43 +167,42 @@
                                                                     <div class="col d-flex flex-column align-items-lg-center align-items-xl-center">
                                                                         <label for="deleteId"class="form-label justify-content-lg-center justify-content-xl-center"><b>ID</b></label>
                                                                         <input id="deleteId" class="form-control justify-content-lg-center align-items-lg-center" style="width: 50%" readonly
-                                                                               th:name="id"
-                                                                               th:type="text"
+                                                                               name="id"
+                                                                               type="text"
                                                                                th:value="*{id}">
                                                                     </div>
                                                                     <div class="col d-flex flex-column align-items-lg-center align-items-xl-center">
                                                                         <label for="deleteFirstName" class="form-label justify-content-lg-center justify-content-xl-center"><b>Имя</b></label>
                                                                         <input id="deleteFirstName" class="form-control justify-content-lg-center align-items-lg-center" style="width: 50%" disabled
-                                                                               th:name="firstName"
-                                                                               th:type="text"
+                                                                               name="firstName"
+                                                                               type="text"
                                                                                th:value="*{firstName}"
-                                                                               th:text="${errorMessage}">
                                                                     </div>
                                                                     <div class="col d-flex flex-column align-items-lg-center align-items-xl-center">
                                                                         <label for="deleteLastName" class="form-label justify-content-lg-center justify-content-xl-center"><b>Фамилия</b></label>
                                                                         <input id="deleteLastName" class="form-control justify-content-lg-center align-items-lg-center" style="width: 50%" disabled
-                                                                               th:name="lastName"
-                                                                               th:type="text"
+                                                                               name="lastName"
+                                                                               type="text"
                                                                                th:value="*{lastName}">
                                                                     </div>
                                                                     <div class="col d-flex flex-column align-items-lg-center align-items-xl-center">
                                                                         <label for="deleteAge" class="form-label justify-content-lg-center justify-content-xl-center"><b>Возраст</b></label>
                                                                         <input id="deleteAge" class="form-control justify-content-lg-center align-items-lg-center" style="width: 50%" disabled
-                                                                               th:name="age"
-                                                                               th:type="text"
+                                                                               name="age"
+                                                                               type="text"
                                                                                th:value="${user.age}" >
                                                                     </div>
                                                                     <div class="col d-flex flex-column align-items-lg-center align-items-xl-center">
                                                                         <label for="deleteEmail" class="form-label justify-content-lg-center justify-content-xl-center"><b>Электронная почта</b></label>
                                                                         <input id="deleteEmail" class="form-control justify-content-lg-center align-items-lg-center" style="width: 50%" readonly
-                                                                               th:name="login"
-                                                                               th:type="text"
+                                                                               name="login"
+                                                                               type="text"
                                                                                th:value="*{login}">
                                                                     </div>
                                                                     <div class="col d-flex flex-column align-items-lg-center align-items-xl-center">
                                                                         <label for="deleteRole" class="form-label justify-content-lg-center justify-content-xl-center"><b>Роли</b></label>
                                                                         <select id="deleteRole" class="form-select justify-content-lg-center align-items-lg-center" multiple="multiple" style="width: 50%" disabled
-                                                                                th:name="roles">
+                                                                                name="roles">
                                                                             <option th:each="role: ${roles}"
                                                                                     th:value="${role.id}"
                                                                                     th:selected="${user.roles.contains(role)}">
@@ -295,14 +287,39 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="tab-pane fade" id="user" role="tabpanel" aria-labelledby="user-tab">
-
+                        <div>
+                            <h1>Информация о пользователе</h1>
+                        </div>
+                        <div class="tab-content">
+                            <div class="tab-pane fade show active" aria-labelledby="users-tab">
+                                <table class="table table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">ИД</th>
+                                        <th scope="col">Имя</th>
+                                        <th scope="col">Фамилия</th>
+                                        <th scope="col">Возраст</th>
+                                        <th scope="col">Email</th>
+                                        <th scope="col">Роль</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td th:text="${thisUser.id}"></td>
+                                        <td th:text="${thisUser.firstName}"></td>
+                                        <td th:text="${thisUser.lastName}"></td>
+                                        <td th:text="${thisUser.age}"></td>
+                                        <td th:text="${thisUser.login}"></td>
+                                        <td th:text="${#strings.arrayJoin(thisUser.roles, ' ')}">
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
-
                 </div>
-
-
             </div>
         </div>
     </div>

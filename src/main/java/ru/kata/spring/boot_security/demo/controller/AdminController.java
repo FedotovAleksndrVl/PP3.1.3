@@ -77,9 +77,6 @@ public class AdminController {
             }
             return "redirect:/admin";
         }
-
-        //userService.updateUser(user);
-        //return "redirect:/admin";
     }
 
     @DeleteMapping("/admin")

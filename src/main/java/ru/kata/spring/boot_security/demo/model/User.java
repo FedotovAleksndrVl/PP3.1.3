@@ -64,6 +64,15 @@ public class User implements UserDetails {
                 '}';
     }
 
+    public boolean ifRole(String role) {
+        for (Role roles : roles) {
+            if (roles.getRole().equals(role)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles;
