@@ -28,21 +28,25 @@ public class AdminController {
 
     @PostMapping("/create")
     public String createOne() {
-        if (userService.ifLogin("login")) {
-            return "redirect:/user";
+        if (userService.ifLogin("admin@admin.ru")) {
+            return "redirect:/login";
         }
-        roleService.saveRole(new Role("ROLE_ADMIN", "админ"));
-        roleService.saveRole(new Role("ROLE_USER","юзер"));
+        if (roleService.findRoleByRole("ROLE_ADMIN") == null) {
+            roleService.saveRole(new Role("ROLE_ADMIN", "админ"));
+        }
+        if (roleService.findRoleByRole("ROLE_USER") == null) {
+            roleService.saveRole(new Role("ROLE_USER","юзер"));
+        }
         Set<Role> role =  roleService.findAllRole();
-        User user = new User("admin","admin", role);
+        User user = new User("admin@admin.ru","admin", role);
         userService.saveUser(user);
-        return "redirect:/user";
+        return "redirect:/admin";
     }
 
     @GetMapping(value = {"/" , "/index"})
     public String index() {
-        if (userService.ifLogin("admin")) {
-            return "redirect:/user";
+        if (userService.ifLogin("admin@admin.ru")) {
+            return "redirect:/login";
         }
         return "index";
     }
@@ -57,15 +61,34 @@ public class AdminController {
     }
 
     @PatchMapping("/admin")
-    public String update(@ModelAttribute("user") User user) {
+    public String update(@Valid @ModelAttribute("user") User user, BindingResult bindingResult, Model model) {
         System.out.println(user);
-        userService.updateUser(user);
-        return "redirect:/admin";
+        if (bindingResult.hasErrors()) {
+            System.out.println("Словили ошибку");
+            return "redirect:/admin";
+        } else {
+            if (user.getId() == null) {
+                if (!(userService.ifLogin(user.getLogin()))) {
+                    System.out.println("Логина такого нет!");
+                    userService.saveUser(user);
+                }
+            } else {
+                userService.updateUser(user);
+            }
+            return "redirect:/admin";
+        }
+
+        //userService.updateUser(user);
+        //return "redirect:/admin";
     }
 
     @DeleteMapping("/admin")
-    public String deleteUser(@ModelAttribute("user") User user) {
+    public String deleteUser(Principal principal, @ModelAttribute("user") User user) {
         System.out.println(user);
+        System.out.println(principal.getName());
+        if (principal.getName().equals(user.getLogin())) {
+            return "redirect:/admin";
+        }
         userService.removeUserById(user.getId());
         return "redirect:/admin";
     }

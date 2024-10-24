@@ -19,16 +19,15 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Pattern(regexp = "^[A-Za-zА-Яа-яЁё]+$", message = "Имя должно содержать только буквы.")
+    //@Pattern(regexp = "^[A-Za-zА-Яа-яЁё]+$", message = "Имя должно содержать только буквы.")
     @Size(min = 1, message = "Минимальная длина 1 символ")
     private String  firstName;
 
-    @Pattern(regexp = "^[A-Za-zА-Яа-яЁё]+$", message = "Имя должно содержать только буквы.")
+    //@Pattern(regexp = "^[A-Za-zА-Яа-яЁё]+$", message = "Имя должно содержать только буквы.")
     @Size(min = 1, message = "Минимальная длина 1 символ")
     private String  lastName;
 
     @Min(value=0, message = "Возраст не может быть менше 0")
-    @Max(value=125, message = "Возраст не может быть больше 125")
     private Byte    age;
 
     @Column(unique=true, name="email")
