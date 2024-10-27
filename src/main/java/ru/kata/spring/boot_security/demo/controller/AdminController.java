@@ -62,14 +62,11 @@ public class AdminController {
 
     @PatchMapping("/admin")
     public String update(@Valid @ModelAttribute("user") User user, BindingResult bindingResult, Model model) {
-        System.out.println(user);
         if (bindingResult.hasErrors()) {
-            System.out.println("Словили ошибку");
             return "redirect:/admin";
         } else {
             if (user.getId() == null) {
                 if (!(userService.ifLogin(user.getLogin()))) {
-                    System.out.println("Логина такого нет!");
                     userService.saveUser(user);
                 }
             } else {
@@ -81,8 +78,6 @@ public class AdminController {
 
     @DeleteMapping("/admin")
     public String deleteUser(Principal principal, @ModelAttribute("user") User user) {
-        System.out.println(user);
-        System.out.println(principal.getName());
         if (principal.getName().equals(user.getLogin())) {
             return "redirect:/admin";
         }
