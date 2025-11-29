@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.repositories.UserRepository;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,7 +37,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     @Override
     public User getUserById(Long id){
         return userRepository.findById(id)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + id));
     }
 
     @Override
@@ -60,8 +61,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     @Override
     @Transactional
     public void updateUser(User user) {
-        User existingUser = userRepository.findById(user.getId())
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        User existingUser = userRepository.findById(user.getId()).get();
         if (user.getPassword().isEmpty()) {
             user.setPassword(existingUser.getPassword());
         } else {
@@ -80,7 +80,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
         Optional<User> user = userRepository.findByLogin(login);
         if (user.isEmpty()) {
-            throw new UsernameNotFoundException(String.format("User '%s' not found", login));
+            throw new UsernameNotFoundException(String.format("User '%s' not found ", login));
         }
         return user.get();
     }

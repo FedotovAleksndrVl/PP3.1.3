@@ -27,7 +27,7 @@ public class User implements UserDetails {
     @Size(min = 1, message = "Минимальная длина 1 символ")
     private String  lastName;
 
-    @Min(value=0, message = "Возраст не может быть менше 0")
+    @Min(value=0, message = "Возраст не может быть меньше 0")
     private Byte    age;
 
     @Column(unique=true, name="email")
