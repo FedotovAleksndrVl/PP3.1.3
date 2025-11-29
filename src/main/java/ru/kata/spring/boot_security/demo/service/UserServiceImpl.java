@@ -60,7 +60,8 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     @Override
     @Transactional
     public void updateUser(User user) {
-        User existingUser = userRepository.findById(user.getId()).get();
+        User existingUser = userRepository.findById(user.getId())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         if (user.getPassword().isEmpty()) {
             user.setPassword(existingUser.getPassword());
         } else {
