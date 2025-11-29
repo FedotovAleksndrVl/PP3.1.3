@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     @Override
     public User getUserByLogin(String login){
         return userRepository.findByLogin(login)
-                .orElseThrow(() -> new EntityNotFoundException("User not found with login: " + login));
+                .orElseThrow(() -> new EntityNotFoundException("User not found with login:"));
     }
 
     @Override
